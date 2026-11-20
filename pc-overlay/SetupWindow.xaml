@@ -1,0 +1,186 @@
+<Window x:Class="WatchHROverlay.SetupWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Galaxy Watch 設定與安裝精靈"
+        Icon="Assets/app.ico"
+        Width="540"
+        Height="640"
+        MinWidth="500"
+        MinHeight="580"
+        WindowStartupLocation="CenterScreen"
+        Background="#0F172A"
+        Foreground="#F8FAFC"
+        FontFamily="Segoe UI">
+
+    <Window.Resources>
+        <Style x:Key="CardStyle" TargetType="Border">
+            <Setter Property="Background" Value="#1E293B" />
+            <Setter Property="BorderBrush" Value="#334155" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="12" />
+            <Setter Property="Padding" Value="16" />
+            <Setter Property="Margin" Value="0,0,0,12" />
+        </Style>
+
+        <Style x:Key="PrimaryBtn" TargetType="Button">
+            <Setter Property="Background" Value="#FF3B5C" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Padding" Value="14,8" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd" Background="{TemplateBinding Background}" CornerRadius="8" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#FF5270" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="Bd" Property="Background" Value="#475569" />
+                                <Setter Property="Foreground" Value="#94A3B8" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SecondaryBtn" TargetType="Button" BasedOn="{StaticResource PrimaryBtn}">
+            <Setter Property="Background" Value="#334155" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd" Background="{TemplateBinding Background}" CornerRadius="8" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#475569" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="Bd" Property="Background" Value="#1E293B" />
+                                <Setter Property="Foreground" Value="#64748B" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="DarkTextBox" TargetType="TextBox">
+            <Setter Property="Background" Value="#0F172A" />
+            <Setter Property="Foreground" Value="#F8FAFC" />
+            <Setter Property="CaretBrush" Value="#F8FAFC" />
+            <Setter Property="BorderBrush" Value="#475569" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Padding" Value="10,7" />
+            <Setter Property="FontSize" Value="13" />
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="18">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <DockPanel Grid.Row="0" Margin="0,0,0,14">
+            <Button x:Name="BtnLangToggle"
+                    DockPanel.Dock="Right"
+                    Style="{StaticResource SecondaryBtn}"
+                    Content="EN / 繁中"
+                    Padding="12,5"
+                    VerticalAlignment="Center"
+                    Click="BtnLangToggle_Click" />
+            <StackPanel>
+                <TextBlock x:Name="TxtHeaderTitle" Text="♥ Galaxy Watch 區網心率設定精靈" FontSize="19" FontWeight="Bold" Foreground="#FFFFFF" />
+                <TextBlock x:Name="TxtHeaderSub" Text="一鍵設定防火牆並無線安裝 App 到你的 Galaxy Watch" FontSize="12" Foreground="#94A3B8" Margin="0,2,0,0" />
+            </StackPanel>
+        </DockPanel>
+
+        <!-- Card 1: Network & Firewall -->
+        <Border Grid.Row="1" Style="{StaticResource CardStyle}">
+            <StackPanel>
+                <TextBlock x:Name="TxtStep1Title" Text="1. 電腦網路與防火牆" FontSize="14" FontWeight="SemiBold" Foreground="#F8FAFC" Margin="0,0,0,8" />
+
+                <DockPanel Margin="0,0,0,8">
+                    <Button x:Name="BtnCopyIp" DockPanel.Dock="Right" Style="{StaticResource SecondaryBtn}" Content="複製 IP" Padding="12,5" Click="BtnCopyIp_Click" />
+                    <TextBlock x:Name="TxtLanIp" Text="本機區網 IP：--" VerticalAlignment="Center" Foreground="#E2E8F0" FontSize="13" />
+                </DockPanel>
+
+                <DockPanel>
+                    <Button x:Name="BtnFirewall" DockPanel.Dock="Right" Style="{StaticResource PrimaryBtn}" Content="一鍵放行防火牆" Padding="14,6" Click="BtnFirewall_Click" />
+                    <TextBlock x:Name="TxtFirewallStatus" Text="防火牆狀態：檢查中..." VerticalAlignment="Center" Foreground="#CBD5E1" FontSize="13" />
+                </DockPanel>
+            </StackPanel>
+        </Border>
+
+        <!-- Card 2: Watch Installer -->
+        <Border Grid.Row="2" Style="{StaticResource CardStyle}">
+            <StackPanel>
+                <DockPanel Margin="0,0,0,6">
+                    <TextBlock x:Name="TxtAdbStatus" DockPanel.Dock="Right" Text="ADB：檢查中..." VerticalAlignment="Center" FontSize="12" Foreground="#94A3B8" />
+                    <TextBlock x:Name="TxtStep2Title" Text="2. 無線安裝到 Galaxy Watch" FontSize="14" FontWeight="SemiBold" Foreground="#F8FAFC" />
+                </DockPanel>
+
+                <TextBlock x:Name="TxtWatchGuide"
+                           Text="手錶操作：設定 → 關於手錶 → 軟體資訊 → 連點「軟體版本」7 次 → 回到設定進入「開發人員選項」→ 開啟 ADB 與無線偵錯。"
+                           TextWrapping="Wrap"
+                           Foreground="#94A3B8"
+                           FontSize="11.5"
+                           Margin="0,0,0,10" />
+
+                <CheckBox x:Name="ChkNeedPair"
+                          Content="首次連線此電腦（需要輸入配對碼）"
+                          Foreground="#E2E8F0"
+                          IsChecked="True"
+                          Margin="0,0,0,8"
+                          Checked="ChkNeedPair_Changed"
+                          Unchecked="ChkNeedPair_Changed" />
+
+                <Grid x:Name="PairPanel" Margin="0,0,0,8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*" />
+                        <ColumnDefinition Width="10" />
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0">
+                        <TextBlock x:Name="TxtPairAddrLabel" Text="配對畫面 IP:Port" FontSize="11.5" Foreground="#CBD5E1" Margin="0,0,0,3" />
+                        <TextBox x:Name="TxtPairAddr" Style="{StaticResource DarkTextBox}" ToolTip="192.168.x.x:xxxxx" />
+                    </StackPanel>
+                    <StackPanel Grid.Column="2">
+                        <TextBlock x:Name="TxtPairCodeLabel" Text="6 位數配對碼" FontSize="11.5" Foreground="#CBD5E1" Margin="0,0,0,3" />
+                        <TextBox x:Name="TxtPairCode" Style="{StaticResource DarkTextBox}" MaxLength="6" />
+                    </StackPanel>
+                </Grid>
+
+                <StackPanel Margin="0,0,0,12">
+                    <TextBlock x:Name="TxtConnectAddrLabel" Text="無線偵錯主畫面 IP:Port（注意：Port 與配對畫面不同）" FontSize="11.5" Foreground="#CBD5E1" Margin="0,0,0,3" />
+                    <TextBox x:Name="TxtConnectAddr" Style="{StaticResource DarkTextBox}" />
+                </StackPanel>
+
+                <Button x:Name="BtnInstallWatch" Style="{StaticResource PrimaryBtn}" Content="一鍵安裝並自動開啟背景權限" Height="38" Click="BtnInstallWatch_Click" />
+            </StackPanel>
+        </Border>
+
+        <!-- Progress Log -->
+        <Border Grid.Row="3" Background="#020617" BorderBrush="#334155" BorderThickness="1" CornerRadius="10" Padding="10">
+            <TextBox x:Name="TxtLog"
+                     Background="Transparent"
+                     Foreground="#CBD5E1"
+                     BorderThickness="0"
+                     IsReadOnly="True"
+                     TextWrapping="Wrap"
+                     VerticalScrollBarVisibility="Auto"
+                     FontFamily="Consolas"
+                     FontSize="12" />
+        </Border>
+    </Grid>
+</Window>

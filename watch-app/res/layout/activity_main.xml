@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingLeft="26dp"
+        android:paddingTop="24dp"
+        android:paddingRight="26dp"
+        android:paddingBottom="36dp">
+
+        <TextView
+            android:id="@+id/txtTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="♥ 區網心率"
+            android:textColor="#FF4D6D"
+            android:textSize="13sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:gravity="bottom"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txtBpm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="--"
+                android:textColor="#FFFFFF"
+                android:textSize="44sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:layout_marginBottom="7dp"
+                android:text="BPM"
+                android:textColor="#94A3B8"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/txtStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:gravity="center"
+            android:text="待機中"
+            android:textColor="#CBD5E1"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/btnToggle"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_btn_start"
+            android:text="開始傳輸"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtIpLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:gravity="center"
+            android:text="電腦 IP（留空為自動搜尋）"
+            android:textColor="#94A3B8"
+            android:textSize="11sp" />
+
+        <EditText
+            android:id="@+id/edtTargetIp"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/bg_input"
+            android:gravity="center"
+            android:hint="自動搜尋"
+            android:imeOptions="actionDone"
+            android:inputType="textUri"
+            android:maxLines="1"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#64748B"
+            android:textSize="13sp" />
+
+        <Button
+            android:id="@+id/btnAutoDiscover"
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_btn_stop"
+            android:text="清除並自動搜尋"
+            android:textAllCaps="false"
+            android:textColor="#E2E8F0"
+            android:textSize="11sp" />
+
+        <Button
+            android:id="@+id/btnLanguage"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_input"
+            android:text="Language: 繁體中文"
+            android:textAllCaps="false"
+            android:textColor="#94A3B8"
+            android:textSize="11sp" />
+    </LinearLayout>
+</ScrollView>

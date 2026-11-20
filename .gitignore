@@ -1,0 +1,21 @@
+# Build outputs
+pc-overlay/bin/
+pc-overlay/obj/
+watch-app/build/
+dist/
+release/
+
+# Local signing keystore (never commit)
+watch-app/*.keystore
+watch-app/*.jks
+
+# IDE & OS files
+.vs/
+.vscode/
+*.user
+*.suo
+*.log
+.DS_Store
+Thumbs.db
+__pycache__/
+*.pyc

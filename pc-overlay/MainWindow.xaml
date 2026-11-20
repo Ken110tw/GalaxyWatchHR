@@ -1,0 +1,141 @@
+<Window x:Class="WatchHROverlay.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Galaxy Watch LAN Heart Rate"
+        Icon="Assets/app.ico"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        Topmost="True"
+        ResizeMode="NoResize"
+        SizeToContent="WidthAndHeight"
+        ShowInTaskbar="False"
+        MouseLeftButtonDown="Root_MouseLeftButtonDown"
+        MouseWheel="Root_MouseWheel"
+        MouseEnter="Root_MouseEnter"
+        MouseLeave="Root_MouseLeave">
+
+    <Window.ContextMenu>
+        <ContextMenu x:Name="OverlayContextMenu">
+            <MenuItem x:Name="MenuSetupWizard" Header="手錶安裝與防火牆精靈..." FontWeight="SemiBold" Click="MenuSetupWizard_Click" />
+            <MenuItem x:Name="MenuIpInfo" Header="本機 IP：載入中..." Click="MenuCopyIp_Click" />
+            <Separator />
+            <MenuItem x:Name="MenuDemoMode" Header="模擬心率測試模式" IsCheckable="True" Click="MenuDemoMode_Click" />
+            <MenuItem x:Name="MenuScaleRoot" Header="縮放大小">
+                <MenuItem x:Name="MenuScaleS" Header="小 (0.8x)" Tag="0.8" Click="MenuScale_Click" />
+                <MenuItem x:Name="MenuScaleM" Header="中 (1.0x)" Tag="1.0" Click="MenuScale_Click" />
+                <MenuItem x:Name="MenuScaleL" Header="大 (1.35x)" Tag="1.35" Click="MenuScale_Click" />
+                <MenuItem x:Name="MenuScaleXL" Header="超大 (1.7x)" Tag="1.7" Click="MenuScale_Click" />
+            </MenuItem>
+            <MenuItem x:Name="MenuOpacityRoot" Header="透明度">
+                <MenuItem Header="100%" Tag="1.0" Click="MenuOpacity_Click" />
+                <MenuItem Header="85%" Tag="0.85" Click="MenuOpacity_Click" />
+                <MenuItem Header="70%" Tag="0.7" Click="MenuOpacity_Click" />
+                <MenuItem Header="50%" Tag="0.5" Click="MenuOpacity_Click" />
+            </MenuItem>
+            <MenuItem x:Name="MenuLanguageRoot" Header="語言 / Language">
+                <MenuItem x:Name="MenuLangAuto" Header="自動偵測 / Auto" Tag="auto" IsCheckable="True" Click="MenuLanguage_Click" />
+                <MenuItem x:Name="MenuLangZh" Header="繁體中文" Tag="zh" IsCheckable="True" Click="MenuLanguage_Click" />
+                <MenuItem x:Name="MenuLangEn" Header="English" Tag="en" IsCheckable="True" Click="MenuLanguage_Click" />
+            </MenuItem>
+            <Separator />
+            <MenuItem x:Name="MenuLockPosition" Header="鎖定位置 (防止誤拖動)" IsCheckable="True" Click="MenuLockPosition_Click" />
+            <MenuItem x:Name="MenuClickThrough" Header="滑鼠穿透模式 (可從系統匣還原)" IsCheckable="True" Click="MenuClickThrough_Click" />
+            <MenuItem x:Name="MenuAutoStart" Header="開機自動啟動" IsCheckable="True" Click="MenuAutoStart_Click" />
+            <Separator />
+            <MenuItem x:Name="MenuResetPos" Header="重設至螢幕左上角" Click="MenuResetPosition_Click" />
+            <MenuItem x:Name="MenuExit" Header="結束程式" Click="MenuExit_Click" />
+        </ContextMenu>
+    </Window.ContextMenu>
+
+    <Grid x:Name="RootGrid" Margin="16" Background="#01000000" Cursor="SizeAll">
+        <Grid.LayoutTransform>
+            <ScaleTransform x:Name="RootScaleTransform" ScaleX="1" ScaleY="1" />
+        </Grid.LayoutTransform>
+
+        <Border x:Name="HoverBackdrop"
+                CornerRadius="18"
+                Background="#550B1120"
+                BorderBrush="#66FFFFFF"
+                BorderThickness="1"
+                Opacity="0"
+                IsHitTestVisible="False" />
+
+        <StackPanel Orientation="Vertical" Margin="14,10,16,10">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <Grid Width="54" Height="54" Margin="0,0,8,0" VerticalAlignment="Center">
+                    <Ellipse x:Name="PulseRing"
+                             Width="38"
+                             Height="38"
+                             Stroke="#FF4D6D"
+                             StrokeThickness="2.5"
+                             Opacity="0"
+                             RenderTransformOrigin="0.5,0.5">
+                        <Ellipse.RenderTransform>
+                            <ScaleTransform x:Name="PulseRingScale" ScaleX="0.8" ScaleY="0.8" />
+                        </Ellipse.RenderTransform>
+                    </Ellipse>
+
+                    <Path x:Name="HeartIcon"
+                          Width="36"
+                          Height="34"
+                          Stretch="Uniform"
+                          Fill="#94A3B8"
+                          RenderTransformOrigin="0.5,0.5"
+                          Data="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z">
+                        <Path.RenderTransform>
+                            <ScaleTransform x:Name="HeartScale" ScaleX="1" ScaleY="1" />
+                        </Path.RenderTransform>
+                        <Path.Effect>
+                            <DropShadowEffect x:Name="HeartGlow"
+                                              Color="#FF4D6D"
+                                              BlurRadius="14"
+                                              ShadowDepth="0"
+                                              Opacity="0.65" />
+                        </Path.Effect>
+                    </Path>
+                </Grid>
+
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom">
+                    <TextBlock x:Name="BpmText"
+                               Text="--"
+                               FontFamily="Segoe UI Variable Display, Segoe UI"
+                               FontSize="48"
+                               FontWeight="Bold"
+                               Foreground="#FFFFFF"
+                               VerticalAlignment="Bottom"
+                               LineHeight="50">
+                        <TextBlock.Effect>
+                            <DropShadowEffect Color="#000000" BlurRadius="8" ShadowDepth="2" Opacity="0.92" />
+                        </TextBlock.Effect>
+                    </TextBlock>
+
+                    <TextBlock Text="BPM"
+                               FontFamily="Segoe UI"
+                               FontSize="13"
+                               FontWeight="SemiBold"
+                               Foreground="#E2E8F0"
+                               Margin="5,0,0,9"
+                               VerticalAlignment="Bottom">
+                        <TextBlock.Effect>
+                            <DropShadowEffect Color="#000000" BlurRadius="5" ShadowDepth="1" Opacity="0.9" />
+                        </TextBlock.Effect>
+                    </TextBlock>
+                </StackPanel>
+            </StackPanel>
+
+            <TextBlock x:Name="StatusText"
+                       Text="..."
+                       FontFamily="Segoe UI"
+                       FontSize="11.5"
+                       FontWeight="SemiBold"
+                       Foreground="#E2E8F0"
+                       HorizontalAlignment="Center"
+                       Margin="0,2,0,0">
+                <TextBlock.Effect>
+                    <DropShadowEffect Color="#000000" BlurRadius="5" ShadowDepth="1" Opacity="0.95" />
+                </TextBlock.Effect>
+            </TextBlock>
+        </StackPanel>
+    </Grid>
+</Window>
